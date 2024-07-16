@@ -4,7 +4,7 @@ const { body, validationResult } = require('express-validator');
 const fetchuser = require('../middleware/fetchuser');
 const Note = require('../models/Note');
 const router = express.Router();
-//Route 1:Get all the notes of User using POST "/api/note/fetchallnotes". Doesn't require login
+//Route 1:Get all the notes of User using POST "/api/note/fetchallnotes".  require login
 router.get('/fetchallnotes', fetchuser, async (req, res) => {
     try {
 
@@ -18,7 +18,7 @@ router.get('/fetchallnotes', fetchuser, async (req, res) => {
 })
 
 
-//Route 2:Add a new note  using POST "/api/note/addnote". Doesn't require login
+//Route 2:Add a new note  using POST "/api/note/addnote". require login
 router.post('/addnote', fetchuser, [
 
     body('title', 'enter a valid title').isLength({ min: 3 }),

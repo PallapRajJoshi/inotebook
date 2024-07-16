@@ -11,10 +11,11 @@ const JWT_SECRET = "Pallap";
 
 //Route 1: Create a User using POST "/api/auth/". Doesn't require login
 router.post('/createuser', [
-
+//validation
     body('email', 'enter valid email').isEmail(),
     body('name', 'enter valid name').isLength({ min: 3 }),
     body('password', 'enter minimum 5 character').isLength({ min: 6 }),
+
 
 ], async (req, res) => {
     // if there is error providing information return bad request and the errors
@@ -29,20 +30,22 @@ router.post('/createuser', [
     //check whether the user already exit
     try {
 
-
         let user = await User.findOne({ email: req.body.email });
+
         if (user) {
             return res.status(400).json({ error: "Sorry a user with the email already exists" })
         }
+        //securing password
         const salt = await bcrypt.genSalt(10);
         const secPass = await bcrypt.hash(req.body.password, salt);
-        //creating use
+        //creating user
         user = await User.create({
             name: req.body.name,
             password: secPass,
             email: req.body.email
 
         });
+        // no idea 
         const data = {
             user: {
                 id: user.id
@@ -59,6 +62,7 @@ router.post('/createuser', [
         res.status(500).send("Internal server error");
     }
 })
+
 // ROUTE 2: Authenticate a User using POST "/api/auth/login". Doesn't require Auth
 router.post('/login', [
 
@@ -80,10 +84,13 @@ router.post('/login', [
 
         let user = await User.findOne({ email: email });
         if (!user) {
+            // user not found with this email
             return res.status(400).json({ error: "try to login with correct credentials" });
         }
+
         const passwordCompaire = await bcrypt.compare(password, user.password);
         if (!passwordCompaire) {
+            // password is not correct
             return res.status(400).json({ error: "try to login with correct credentials" });
         }
 
@@ -102,13 +109,10 @@ router.post('/login', [
     }
 });
 
-// ROUTE 3: Get loggedin user details Useing using POST: "/api/auth/getuser".login require 
+// ROUTE 3: Get loggedin user  Useing using POST: "/api/auth/getuser".login require 
 
 router.post('/getuser',fetchuser
-
-
     , async (req, res) => {
-
 
 
         try {
