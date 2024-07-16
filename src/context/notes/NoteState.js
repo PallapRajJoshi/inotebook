@@ -10,23 +10,23 @@ const NoteState = (props) => {
 
 
 
- //get all  notes
- const getNotes = async () => {
-  
+  //get all  notes
+  const getNotes = async () => {
 
-  const response = await fetch(`${host}/api/notes/fetchallnotes`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY4ZmJlYmIzZGEyNTM2MjVlNzIxMzIxIn0sImlhdCI6MTcyMDc2MjU5OX0.HO1VKKZGBj6usP1TFS6SVe3wmJwgklmoi54FbTKwqF8'
 
-    },
-   
-  });
-const json=await response.json();
-console.log(json)
-setNotes(json);
-}
+    const response = await fetch(`${host}/api/notes/fetchallnotes`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY4ZmJlYmIzZGEyNTM2MjVlNzIxMzIxIn0sImlhdCI6MTcyMDc2MjU5OX0.HO1VKKZGBj6usP1TFS6SVe3wmJwgklmoi54FbTKwqF8'
+
+      },
+
+    });
+    const json = await response.json();
+    console.log(json)
+    setNotes(json);
+  }
 
 
 
@@ -44,10 +44,10 @@ setNotes(json);
         'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY4ZmJlYmIzZGEyNTM2MjVlNzIxMzIxIn0sImlhdCI6MTcyMDc2MjU5OX0.HO1VKKZGBj6usP1TFS6SVe3wmJwgklmoi54FbTKwqF8'
 
       },
-      body: JSON.stringify({title,description,tag})
+      body: JSON.stringify({ title, description, tag })
     });
 
-const json=response.json();
+    const json = response.json();
 
 
 
@@ -67,7 +67,21 @@ const json=response.json();
 
   //Delete a note
 
-  const deleteNote = (id) => {
+  const deleteNote = async (id) => {
+// api call
+    const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY4ZmJlYmIzZGEyNTM2MjVlNzIxMzIxIn0sImlhdCI6MTcyMDc2MjU5OX0.HO1VKKZGBj6usP1TFS6SVe3wmJwgklmoi54FbTKwqF8'
+
+      },
+     
+    });
+
+    const json = response.json();
+    console.log(json)
+    //end api
 
     const newNotes = notes.filter((note) => {
 
@@ -87,10 +101,10 @@ const json=response.json();
         'auth-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY4ZmJlYmIzZGEyNTM2MjVlNzIxMzIxIn0sImlhdCI6MTcyMDc2MjU5OX0.HO1VKKZGBj6usP1TFS6SVe3wmJwgklmoi54FbTKwqF8'
 
       },
-      body: JSON.stringify({title,description,tag})
+      body: JSON.stringify({ title, description, tag })
     });
 
-const json=response.json();
+    const json = response.json();
 
     //logic to edit in client 
     for (let index = 0; index < notes.length; index++) {
@@ -108,7 +122,7 @@ const json=response.json();
 
 
   return (
-    <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote,getNotes }}>
+    <NoteContext.Provider value={{ notes, addNote, deleteNote, editNote, getNotes }}>
 
 
       {props.children}
